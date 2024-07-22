@@ -8,11 +8,11 @@ export async function signup(
     alias: string;
     email: string;
     password: string;
-    fullName: string;
+    full_name: string;
   }
 ) {
   try {
-    const { alias, email, password, fullName } = body;
+    const { alias, email, password, full_name } = body;
 
     const existingUserByAlias = await db.user.findUnique({ where: { alias } });
     if (existingUserByAlias) {
@@ -31,18 +31,18 @@ export async function signup(
         alias,
         email,
         password: await bcrypt.hash(security.SHA_SALT + password + alias, 10),
-        fullName,
+        full_name,
       },
     });
 
     const auth = await db.auth.create({
       data: {
-        userId: user.id,
+        user_id: user.id,
       },
     });
 
     set.status = 201;
-    return { message: 'User created', authCode: auth.code };
+    return { userId: user.id, authCode: auth.code };
   } catch (e) {
     set.status = 500;
     return e instanceof Error ? e.message : 'An unknown error occurred';
@@ -70,7 +70,7 @@ export async function login(
 
     if (!user) {
       set.status = 404;
-      return 'User not found';
+      return 'Alias or email not found';
     }
 
     if (
@@ -83,7 +83,7 @@ export async function login(
       return 'Invalid password';
     }
 
-    return { message: 'Login successful', authCode: user.auths[0].code };
+    return { userId: user.id, authCode: user.auths[0].code };
   } catch (e) {
     set.status = 500;
     return e instanceof Error ? e.message : 'An unknown error occurred';
@@ -93,19 +93,19 @@ export async function login(
 export async function auth(
   set: { status: number },
   body: {
-    email: string;
-    authCode: string;
+    user_id: string;
+    auth_code: string;
   }
 ) {
   try {
-    const { email, authCode } = body;
+    const { user_id, auth_code } = body;
 
     const user = await db.user.findFirst({
       where: {
-        email,
+        id: user_id,
         auths: {
           some: {
-            code: authCode,
+            code: auth_code,
           },
         },
       },
@@ -113,10 +113,10 @@ export async function auth(
 
     if (!user) {
       set.status = 401;
-      return 'Invalid email or auth code';
+      return 'Invalid alias or auth code';
     }
 
-    return { message: 'Authentication successful', user };
+    return user;
   } catch (e) {
     set.status = 500;
     return e instanceof Error ? e.message : 'An unknown error occurred';

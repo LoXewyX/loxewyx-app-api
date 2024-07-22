@@ -76,7 +76,7 @@ const userRoutes = new Elysia()
         minLength: 8,
         error: 'Password must be at least 8 characters long',
       }),
-      fullName: t.String({
+      full_name: t.String({
         minLength: 1,
         maxLength: 100,
         error: 'Full name must contain between 1 - 100 characters',
@@ -125,7 +125,7 @@ const userRoutes = new Elysia()
             minLength: 8,
             error: 'Password must be at least 8 characters long',
           }),
-          fullName: t.String({
+          full_name: t.String({
             minLength: 1,
             maxLength: 100,
             error: 'Full name must contain between 1 - 100 characters',

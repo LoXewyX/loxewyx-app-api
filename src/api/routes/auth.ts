@@ -17,7 +17,7 @@ const authRoutes = new Elysia()
         minLength: 8,
         error: 'Password must be at least 8 characters long',
       }),
-      fullName: t.String({
+      full_name: t.String({
         minLength: 1,
         maxLength: 100,
         error: 'Full name must contain between 1 - 100 characters',
@@ -69,11 +69,10 @@ const authRoutes = new Elysia()
   })
   .post('/auth', ({ set, body }) => auth(set as { status: number }, body), {
     body: t.Object({
-      email: t.String({
-        format: 'email',
-        error: 'Bad email',
+      user_id: t.String({
+        error: 'User id not found',
       }),
-      authCode: t.String({
+      auth_code: t.String({
         format: 'uuid',
         error: 'Auth code must be a valid UUID',
       }),

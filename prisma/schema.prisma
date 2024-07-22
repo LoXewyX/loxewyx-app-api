@@ -14,29 +14,29 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  alias     String    @unique
-  email     String    @unique
-  password  String
-  fullName  String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  messages  Message[]
-  auths     Auth[]
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  alias      String    @unique
+  email      String    @unique
+  password   String
+  full_name  String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  messages   Message[]
+  auths      Auth[]
 }
 
 model Message {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String    @db.ObjectId
-  content   String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String    @db.ObjectId
+  content    String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Auth {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  code   String @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  user_id String @db.ObjectId
+  code    String @default(uuid())
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

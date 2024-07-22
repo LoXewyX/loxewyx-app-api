@@ -49,7 +49,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
 
         try {
           const result = await addMessage(set, {
-            userId: users[ws.id].id,
+            user_id: users[ws.id].id,
             content: msg.body as string,
           });
 
@@ -59,7 +59,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
             const savedMessage = result;
             messages.push({
               user: users[ws.id],
-              date: savedMessage.createdAt?.toISOString() || newMessage.date,
+              date: savedMessage.created_at?.toISOString() || newMessage.date,
               text: savedMessage.content,
             });
             ws.publish(

@@ -2,7 +2,7 @@ import db from '../../db';
 
 export async function getUsers(set: { status: number }) {
   try {
-    return await db.user.findMany({ orderBy: { createdAt: 'asc' } });
+    return await db.user.findMany({ orderBy: { created_at: 'asc' } });
   } catch (e) {
     set.status = 500;
     return e;
@@ -14,7 +14,7 @@ export async function getAuth(set: { status: number }) {
     return await db.auth.findMany({
       orderBy: {
         user: {
-          createdAt: 'asc',
+          created_at: 'asc',
         },
       },
       include: {
@@ -49,11 +49,11 @@ export async function createUser(
     alias: string;
     email: string;
     password: string;
-    fullName: string;
+    full_name: string;
   }
 ) {
   try {
-    const { alias, email, password, fullName } = body;
+    const { alias, email, password, full_name } = body;
 
     const existingUserByAlias = await db.user.findUnique({ where: { alias } });
     if (existingUserByAlias) {
@@ -72,7 +72,7 @@ export async function createUser(
         alias,
         email,
         password,
-        fullName,
+        full_name,
       },
     });
 
@@ -91,11 +91,11 @@ export async function updateUser(
     alias?: string;
     email?: string;
     password?: string;
-    fullName?: string;
+    full_name?: string;
   }
 ) {
   try {
-    const { alias, email, password, fullName } = body;
+    const { alias, email, password, full_name } = body;
 
     return await db.user.update({
       where: { id },
@@ -103,7 +103,7 @@ export async function updateUser(
         ...(alias ? { alias } : {}),
         ...(email ? { email } : {}),
         ...(password ? { password } : {}),
-        ...(fullName ? { fullName } : {}),
+        ...(full_name ? { full_name } : {}),
       },
     });
   } catch (e) {

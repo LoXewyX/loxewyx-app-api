@@ -2,17 +2,17 @@ import db from '../../db';
 
 export async function addMessage(
   set: { status: number },
-  body: { userId: string; content: string }
+  body: { user_id: string; content: string }
 ) {
-  const { userId, content } = body;
+  const { user_id, content } = body;
 
   try {
     const newMessage = await db.message.create({
       data: {
-        userId,
+        user_id,
         content,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
     return newMessage;
