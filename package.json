@@ -1,15 +1,22 @@
 {
   "name": "loxewyx-app-api",
-  "version": "1.0.50",
+  "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/app.ts"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "@prisma/client": "^5.17.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
     "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "@types/bcryptjs": "^2.4.6",
+    "bun-types": "latest",
+    "prisma": "^5.17.0"
   },
-  "module": "src/index.js"
+  "module": "src/app.js"
 }
