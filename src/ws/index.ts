@@ -3,21 +3,32 @@ import { addMessage } from '../api/controllers/message';
 
 interface User {
   id: string;
+  alias: string;
+  email: string;
+  password: string;
+  full_name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface User {
+  id: string;
   name: string;
 }
 
-interface Message {
+interface RequestMessage {
   type: string;
   body: string;
 }
 
 interface Body {
-  user: User;
+  user: { id: string; name: string };
   date: string;
   text: string;
 }
 
-let users: { [key: string]: User } = {};
+let user: User;
+let users: { [key: string]: { id: string; name: string } } = {};
 let messages: Body[] = [];
 
 const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
@@ -26,19 +37,25 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
     ws.subscribe('room');
   },
   async message(ws, message) {
-    const msg: Message = message as Message;
+    const msg = message as RequestMessage;
     switch (msg.type) {
       case 'connected':
-        users[ws.id] = { id: ws.id, name: msg.body as string };
+        console.log(msg.body);
+        user = msg.body as unknown as User;
+        users[ws.id] = { id: user!.id, name: user!.alias };
         ws.publish(
           'room',
           JSON.stringify({
             type: 'connected',
-            body: { currUser: users[ws.id], users, messages },
+            body: { currUser: users[ws.id].id, users, messages },
           })
         );
         break;
       case 'send':
+        if (!users[ws.id]) {
+          console.error(`User ${ws.id} not found`);
+          return;
+        }
         const newMessage = {
           user: users[ws.id],
           date: new Date().toISOString(),

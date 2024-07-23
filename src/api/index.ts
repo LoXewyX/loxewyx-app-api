@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-// import user from './routes/user';
 import auth from './routes/auth';
+import message from './routes/message';
 
 const routes = new Elysia()
-  // .group('/users', (app) => app.use(user))
-  .group('/auth', (app) => app.use(auth));
+  .group('/auth', (app) => app.use(auth))
+  .group('/message', (app) => app.use(message));
 
 export default routes;

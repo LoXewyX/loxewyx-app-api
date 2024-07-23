@@ -15,7 +15,21 @@ export async function addMessage(
         updated_at: new Date(),
       },
     });
+    set.status = 201;
     return newMessage;
+  } catch (e) {
+    set.status = 500;
+    return e instanceof Error ? e.message : 'An unknown error occurred';
+  }
+}
+
+export async function getAllMessages(set: { status: number }) {
+  try {
+    const messages = await db.message.findMany({
+      orderBy: { created_at: 'asc' },
+    });
+    set.status = 200;
+    return messages;
   } catch (e) {
     set.status = 500;
     return e instanceof Error ? e.message : 'An unknown error occurred';
