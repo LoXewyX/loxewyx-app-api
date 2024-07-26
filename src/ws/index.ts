@@ -33,14 +33,13 @@ let messages: Body[] = [];
 
 const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
   open(ws) {
-    console.log(`  [User ${ws.id} was connected]`);
+    console.log(`  [User ${user.id} (${ws.id}) was connected]`);
     ws.subscribe('room');
   },
   async message(ws, message) {
     const msg = message as RequestMessage;
     switch (msg.type) {
       case 'connected':
-        console.log(msg.body);
         user = msg.body as unknown as User;
         users[ws.id] = { id: user!.id, name: user!.alias };
         ws.publish(
@@ -53,7 +52,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
         break;
       case 'send':
         if (!users[ws.id]) {
-          console.error(`User ${ws.id} not found`);
+          console.error(`  [User ${ws.id} not found!]`);
           return;
         }
         const newMessage = {
@@ -103,7 +102,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
       'room',
       JSON.stringify({ type: 'update', body: { users, messages } })
     );
-    console.log(`  [User ${ws.id} was disconnected]`);
+    console.log(`  [User ${user.id} (${ws.id}) was disconnected]`);
   },
 });
 

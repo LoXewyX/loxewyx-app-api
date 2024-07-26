@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { cors } from '@elysiajs/cors';
 
 import swaggerConfig from './swagger';
 
@@ -11,6 +12,7 @@ const app = new Elysia({
     publishToSelf: true,
   },
 })
+  .use(cors())
   .use(swaggerConfig)
   .use(websocketRoutes)
   .group('/api', (app) => app.use(api))

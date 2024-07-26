@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bun build ./src/app.ts --outdir dist",
+    "build": "bun build ./src/app.ts --minify --outdir dist",
     "start": "bun run ./dist/app.js",
     "dev": "bun run --watch src/app.ts"
   },
