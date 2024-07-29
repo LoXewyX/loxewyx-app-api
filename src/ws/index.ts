@@ -11,24 +11,20 @@ interface User {
   updated_at: Date;
 }
 
-interface User {
-  id: string;
-  name: string;
-}
-
 interface RequestMessage {
   type: string;
-  body: string;
+  body: string | User;
 }
 
 interface Body {
-  user: { id: string; name: string };
+  user_id: string;
+  user_alias: string;
   date: string;
   text: string;
 }
 
-let user: User;
-let users: { [key: string]: { id: string; name: string } } = {};
+let user: User | null = null;
+let users: { [key: string]: { id: string; alias: string } } = {};
 let messages: Body[] = [];
 
 const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
@@ -39,9 +35,10 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
     const msg = message as RequestMessage;
     switch (msg.type) {
       case 'connected':
-        user = msg.body as unknown as User;
+        user = msg.body as User;
+        if (!user) return;
         console.log(`  [User ID=${user.id}, WS=${ws.id} was connected]`);
-        users[ws.id] = { id: user!.id, name: user!.alias };
+        users[ws.id] = { id: user.id, alias: user.alias };
         ws.publish(
           'room',
           JSON.stringify({
@@ -50,16 +47,12 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
           })
         );
         break;
+
       case 'send':
         if (!users[ws.id]) {
           console.error(`  [User ${ws.id} not found!]`);
           return;
         }
-        const newMessage = {
-          user: users[ws.id],
-          date: new Date().toISOString(),
-          text: msg.body as string,
-        };
 
         const set = { status: 200 };
 
@@ -69,15 +62,14 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
             content: msg.body as string,
           });
 
-          if (typeof result === 'string') {
-            console.error(`Failed to save message: ${result}`);
-          } else {
-            const savedMessage = result;
-            messages.push({
-              user: users[ws.id],
-              date: savedMessage.created_at?.toISOString() || newMessage.date,
-              text: savedMessage.content,
-            });
+          if (typeof result !== 'string') {
+            const newMessage = {
+              user_id: result.user_id,
+              user_alias: result.user.alias,
+              date: new Date().toISOString(),
+              text: msg.body as string,
+            };
+            messages.push(newMessage);
             ws.publish(
               'room',
               JSON.stringify({
@@ -102,7 +94,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
       'room',
       JSON.stringify({ type: 'update', body: { users, messages } })
     );
-    console.log(`  [User ID=${user.id}, WS=${ws.id} was disconnected]`);
+    console.log(`  [User ID=${user ? user.id : 'undefined'}, WS=${ws.id} was disconnected]`);
   },
 });
 

@@ -24,6 +24,7 @@ const messageRoutes = new Elysia()
       }),
       content: t.String({
         minLength: 1,
+        maxLength: 1024,
         error: 'Content is required',
       }),
     }),
