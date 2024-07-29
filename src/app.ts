@@ -15,6 +15,19 @@ const app = new Elysia({
   .use(cors())
   .use(swaggerConfig)
   .use(websocketRoutes)
+  .get('/', () => 'OK', {
+    detail: {
+      summary: 'Integrity ping',
+      tags: ['Integrity'],
+      responses: {
+        '200': {
+          description: 'Server is up',
+        },
+        '500': {
+          description: 'Internal server error',
+        },
+      },
+    }})
   .group('/api', (app) => app.use(api))
   .listen(process.env.PORT || 4200);
 

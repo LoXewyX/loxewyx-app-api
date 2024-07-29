@@ -9,6 +9,10 @@ const swaggerConfig = swagger({
     },
     tags: [
       {
+        name: 'Integrity',
+        description: 'Tests the server integrity with a simple ping.',
+      },
+      {
         name: 'Auth',
         description:
           'Handle users and their creation and authentication, including login, registration, and user management.',

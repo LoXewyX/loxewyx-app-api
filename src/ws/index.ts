@@ -46,7 +46,7 @@ const websocketRoutes = new Elysia({ prefix: '/ws' }).ws('/room', {
           'room',
           JSON.stringify({
             type: 'connected',
-            body: { currUser: users[ws.id].id, users, messages },
+            body: { currUser: users[ws.id], users, messages },
           })
         );
         break;
