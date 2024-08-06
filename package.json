@@ -10,15 +10,16 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.0",
     "@elysiajs/swagger": "^1.1.0",
-    "@prisma/client": "^5.17.0",
+    "@prisma/client": "^5.18.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "elysia": "latest"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8",
     "@types/bcryptjs": "^2.4.6",
     "bun-types": "latest",
-    "prisma": "^5.17.0"
+    "prisma": "^5.18.0"
   },
   "module": "src/app.js"
 }
