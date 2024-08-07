@@ -12,7 +12,6 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
@@ -22,7 +21,7 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY --link bun.lockb package.json ./
-RUN bun install
+RUN bun install --ci
 
 # Generate Prisma Client
 COPY --link prisma .
@@ -30,14 +29,6 @@ RUN bunx prisma generate
 
 # Copy application code
 COPY --link . .
-
-# Build application
-RUN bun run build
-
-# Remove development dependencies
-RUN rm -rf node_modules && \
-    bun install --ci
-
 
 # Final stage for app image
 FROM base

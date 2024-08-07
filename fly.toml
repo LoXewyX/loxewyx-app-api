@@ -1,12 +1,15 @@
-# fly.toml app configuration file generated for loxewyx-app-api-patient-thunder-3965 on 2024-08-06T23:01:04+02:00
+# fly.toml app configuration file generated for loxewyx-app-api on 2024-08-07T16:08:19+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'loxewyx-app-api-patient-thunder-3965'
+app = 'loxewyx-app-api'
 primary_region = 'mad'
 
 [build]
+
+[deploy]
+  release_command = "bunx prisma generate"
 
 [http_service]
   internal_port = 3000

@@ -44,7 +44,3 @@ package-lock.json
 
 # secrets
 .env
-
-# ignore package lock
-package-lock.json
-bun.lockb

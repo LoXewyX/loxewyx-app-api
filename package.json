@@ -3,12 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bun build ./src/app.ts --minify --outdir dist",
-    "start": "bun run ./dist/app.js",
+    "start": "bun run src/app.ts",
     "dev": "bun run --watch src/app.ts"
   },
   "dependencies": {
-    "@elysiajs/cors": "^1.1.0",
     "@elysiajs/swagger": "^1.1.0",
     "@prisma/client": "^5.18.0",
     "bcryptjs": "^2.4.3",

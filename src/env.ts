@@ -1,5 +1,5 @@
 const security = {
-  SHA_SALT: process.env.SHA_SALT ?? '',
+  SHA_SALT: Bun.env.SHA_SALT ?? '',
 };
 
 export { security };
